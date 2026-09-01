@@ -85,7 +85,7 @@ button:disabled{background:#94a3b8;cursor:not-allowed;}
 .fields-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 18px;
+    gap: 20px;
     margin-top: 15px;
 }
 @media (min-width: 900px) {
@@ -97,10 +97,10 @@ button:disabled{background:#94a3b8;cursor:not-allowed;}
     }
 }
 
-/* Modern Card Styling with Professional Accent Borders */
+/* Modern Card Styling with Professional Accent Borders & Extra Breathing Room */
 .field {
     margin: 0;
-    padding: 18px 20px;
+    padding: 20px 22px;
     background: var(--box-bg);
     border-radius: 14px;
     border: 1px solid var(--border-color);
@@ -125,13 +125,29 @@ button:disabled{background:#94a3b8;cursor:not-allowed;}
 .field.f-rollreg { border-left: 5px solid #d97706; }
 .field.f-seatprn { border-left: 5px solid #0891b2; }
 
-.label-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:12px;}
+.label-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:12px;}
 .label{font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px;flex:1;min-width:0;word-break:break-word;}
 .copy-btn{padding:5px 12px;font-size:12px;background:#10b981;border-radius:6px;width:auto;cursor:pointer;border:none;color:white;font-weight:600;flex-shrink:0;transition:background 0.2s;}
 .copy-btn:hover{background:#059669;}
 
-.value-input{width:100%;padding:10px 14px;border:1px solid var(--border-color);border-radius:8px;font-size:15px;background:var(--input-bg);color:var(--text-color);font-weight:500;transition:border-color 0.2s;}
-.value-input:focus{border-color:#2563eb;outline:none;}
+/* Enhanced & Larger Result Input Boxes for Perfect Clarity */
+.value-input{
+    width:100%;
+    padding: 13px 16px;
+    border: 1.5px solid var(--border-color);
+    border-radius: 10px;
+    font-size: 17px;
+    background: var(--input-bg);
+    color: var(--text-color);
+    font-weight: 600;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.value-input:focus{
+    border-color:#2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    outline:none;
+}
+
 textarea{width:100%;min-height:120px;border:1px solid var(--border-color);border-radius:8px;padding:12px;font-size:14px;background:var(--input-bg);color:var(--text-color);resize:vertical;}
 .hidden{display:none;}
 .history-section{margin-top:30px;border-top:1px solid var(--border-color);padding-top:20px;}

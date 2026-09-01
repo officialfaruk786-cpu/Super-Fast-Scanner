@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Super Fast Scanner - Professional Dashboard</title>
-<!-- SheetJS Library for Direct Excel (.xlsx) Export -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 :root {
@@ -130,21 +129,21 @@ button:disabled{background:#94a3b8;cursor:not-allowed;}
 .copy-btn{padding:5px 12px;font-size:12px;background:#10b981;border-radius:6px;width:auto;cursor:pointer;border:none;color:white;font-weight:600;flex-shrink:0;transition:background 0.2s;}
 .copy-btn:hover{background:#059669;}
 
-/* Enhanced & Larger Result Input Boxes for Perfect Clarity */
+/* Balanced & Clean Result Input Boxes (Not overly heavy/bold) */
 .value-input{
     width:100%;
-    padding: 13px 16px;
+    padding: 12px 15px;
     border: 1.5px solid var(--border-color);
     border-radius: 10px;
-    font-size: 17px;
+    font-size: 15px;
     background: var(--input-bg);
     color: var(--text-color);
-    font-weight: 600;
+    font-weight: 500; /* Balanced weight - clean and readable */
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 .value-input:focus{
     border-color:#2563eb;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
     outline:none;
 }
 
@@ -157,7 +156,6 @@ textarea{width:100%;min-height:120px;border:1px solid var(--border-color);border
 </head>
 <body>
 
-<!-- Login Section -->
 <div id="loginSection" class="login-card">
     <h2 style="margin-top:0; font-weight:700;">🔐 Super Fast Scanner</h2>
     <p style="color: #64748b; font-size: 14px; margin-bottom: 25px;">Access karne ke liye Login ID aur Password dalein</p>
@@ -173,7 +171,6 @@ textarea{width:100%;min-height:120px;border:1px solid var(--border-color);border
     <div id="loginError" style="color:#dc2626; font-size:14px; margin-top:15px; font-weight:600;"></div>
 </div>
 
-<!-- Main App Container -->
 <div class="container hidden" id="appContainer">
     <div class="header-row">
         <h1>
@@ -210,14 +207,11 @@ textarea{width:100%;min-height:120px;border:1px solid var(--border-color);border
     <div id="resultSection" class="hidden">
         <div class="success">✅ Successfully Scanned & Editable!</div>
 
-        <!-- Global Copy All Button -->
         <div style="margin-bottom: 15px; text-align: right;">
             <button class="copy-btn" onclick="copyAllData()" style="padding: 10px 18px; font-size: 14px;">📋 Copy All Data</button>
         </div>
 
-        <!-- Laptop Row/Grid Layout Container with Professional Vector Icons -->
         <div class="fields-grid">
-            <!-- 1. Candidate Name -->
             <div class="field f-name">
                 <div class="label-row">
                     <span class="label" style="color:#2563eb;">
@@ -229,7 +223,6 @@ textarea{width:100%;min-height:120px;border:1px solid var(--border-color);border
                 <input type="text" class="value-input" id="candidateName">
             </div>
 
-            <!-- 2. Degree & Course -->
             <div class="field f-deg">
                 <div class="label-row">
                     <span class="label" style="color:#9333ea;">
@@ -241,7 +234,6 @@ textarea{width:100%;min-height:120px;border:1px solid var(--border-color);border
                 <input type="text" class="value-input" id="degreeCourse">
             </div>
 
-            <!-- 3. College -->
             <div class="field f-college">
                 <div class="label-row">
                     <span class="label" style="color:#0d9488;">
@@ -253,7 +245,6 @@ textarea{width:100%;min-height:120px;border:1px solid var(--border-color);border
                 <input type="text" class="value-input" id="college">
             </div>
 
-            <!-- 4. University -->
             <div class="field f-univ">
                 <div class="label-row">
                     <span class="label" style="color:#4f46e5;">
@@ -265,7 +256,6 @@ textarea{width:100%;min-height:120px;border:1px solid var(--border-color);border
                 <input type="text" class="value-input" id="university">
             </div>
 
-            <!-- 5. Result -->
             <div class="field f-result">
                 <div class="label-row">
                     <span class="label" style="color:#16a34a;">
@@ -277,7 +267,6 @@ textarea{width:100%;min-height:120px;border:1px solid var(--border-color);border
                 <input type="text" class="value-input" id="result">
             </div>
 
-            <!-- 6. Examination -->
             <div class="field f-exam">
                 <div class="label-row">
                     <span class="label" style="color:#ea580c;">
@@ -289,7 +278,6 @@ textarea{width:100%;min-height:120px;border:1px solid var(--border-color);border
                 <input type="text" class="value-input" id="exam">
             </div>
 
-            <!-- 7. Issue Date -->
             <div class="field f-issue">
                 <div class="label-row">
                     <span class="label" style="color:#e11d48;">
@@ -301,7 +289,6 @@ textarea{width:100%;min-height:120px;border:1px solid var(--border-color);border
                 <input type="text" class="value-input" id="issueDate">
             </div>
 
-            <!-- 8. Registration No. -->
             <div class="field f-reg">
                 <div class="label-row">
                     <span class="label" style="color:#dc2626;">
@@ -313,7 +300,6 @@ textarea{width:100%;min-height:120px;border:1px solid var(--border-color);border
                 <input type="text" class="value-input" id="regNo">
             </div>
 
-            <!-- 9. Registration & Roll Details -->
             <div class="field f-regroll">
                 <div class="label-row">
                     <span class="label" style="color:#a855f7;">
@@ -325,7 +311,6 @@ textarea{width:100%;min-height:120px;border:1px solid var(--border-color);border
                 <input type="text" class="value-input" id="regRoll">
             </div>
 
-            <!-- 10. Roll Prefix & Reg. Details -->
             <div class="field f-rollreg">
                 <div class="label-row">
                     <span class="label" style="color:#d97706;">
@@ -337,7 +322,6 @@ textarea{width:100%;min-height:120px;border:1px solid var(--border-color);border
                 <input type="text" class="value-input" id="rollRegCombined">
             </div>
 
-            <!-- 11. Seat & PRN Details -->
             <div class="field f-seatprn full-span">
                 <div class="label-row">
                     <span class="label" style="color:#0891b2;">

@@ -4,12 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Super Fast Scanner - Login</title>
+<!-- SheetJS Library for Direct Excel (.xlsx) Export -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 :root {
-    --bg-color: #eef2f7;
+    --bg-color: #f0f4f8;
     --container-bg: #ffffff;
     --text-color: #111111;
-    --border-color: #ccc;
+    --border-color: #d1d5db;
     --input-bg: #ffffff;
     --box-bg: #fafafa;
 }
@@ -52,11 +54,51 @@ button.secondary{background:#757575;}
 button:disabled{background:#aaa;cursor:not-allowed;}
 #status{text-align:center;margin:22px 0;font-size:17px;font-weight:bold;}
 .success{text-align:center;color:green;font-size:24px;font-weight:bold;margin:25px 0;}
-.field{margin:22px 0;}
-.label-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
-.label{font-size:18px;font-weight:bold;}
-.copy-btn{padding:5px 10px;font-size:13px;background:#4caf50;border-radius:6px;width:auto;}
-.value-input{width:100%;padding:12px;border:2px solid var(--border-color);border-radius:12px;font-size:16px;background:var(--input-bg);color:var(--text-color);}
+
+/* Distinct Unique Colorful Themes for Every Box */
+.field {
+    margin: 22px 0;
+    padding: 16px;
+    background: var(--box-bg);
+    border-radius: 20px;
+    border: 2px solid var(--border-color);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.field:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+/* 1. Candidate Name - Royal Blue */
+.field.f-name { border-left: 8px solid #2563eb; background: linear-gradient(135deg, rgba(37, 99, 235, 0.07), var(--box-bg)); }
+/* 2. Degree & Course - Vibrant Purple */
+.field.f-deg { border-left: 8px solid #9333ea; background: linear-gradient(135deg, rgba(147, 51, 234, 0.07), var(--box-bg)); }
+/* 3. College - Deep Teal */
+.field.f-college { border-left: 8px solid #0d9488; background: linear-gradient(135deg, rgba(13, 148, 136, 0.07), var(--box-bg)); }
+/* 4. University - Indigo Blue */
+.field.f-univ { border-left: 8px solid #4f46e5; background: linear-gradient(135deg, rgba(79, 70, 229, 0.07), var(--box-bg)); }
+/* 5. Result - Emerald Green */
+.field.f-result { border-left: 8px solid #16a34a; background: linear-gradient(135deg, rgba(22, 163, 74, 0.07), var(--box-bg)); }
+/* 6. Examination - Sunset Orange */
+.field.f-exam { border-left: 8px solid #ea580c; background: linear-gradient(135deg, rgba(234, 88, 12, 0.07), var(--box-bg)); }
+/* 7. Issue Date - Rose Pink */
+.field.f-issue { border-left: 8px solid #e11d48; background: linear-gradient(135deg, rgba(225, 29, 72, 0.07), var(--box-bg)); }
+/* 8. Registration No. - Crimson Red */
+.field.f-reg { border-left: 8px solid #dc2626; background: linear-gradient(135deg, rgba(220, 38, 38, 0.07), var(--box-bg)); }
+/* 9. Registration & Roll Details - Electric Violet */
+.field.f-regroll { border-left: 8px solid #a855f7; background: linear-gradient(135deg, rgba(168, 85, 247, 0.09), var(--box-bg)); box-shadow: 0 4px 18px rgba(168, 85, 247, 0.15); }
+/* 10. Roll Prefix & Reg. Details (New Separate Box) - Amber Gold */
+.field.f-rollreg { border-left: 8px solid #d97706; background: linear-gradient(135deg, rgba(217, 119, 6, 0.09), var(--box-bg)); box-shadow: 0 4px 18px rgba(217, 119, 6, 0.15); }
+/* 11. Seat & PRN Details - Cyan Blue */
+.field.f-seatprn { border-left: 8px solid #0891b2; background: linear-gradient(135deg, rgba(8, 145, 178, 0.07), var(--box-bg)); }
+
+/* Fixed Mobile Overlap Issue */
+.label-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:12px;}
+.label{font-size:16px;font-weight:bold;flex:1;min-width:0;word-break:break-word;}
+.copy-btn{padding:6px 14px;font-size:13px;background:#4caf50;border-radius:8px;width:auto;cursor:pointer;border:none;color:white;font-weight:bold;flex-shrink:0;}
+
+.value-input{width:100%;padding:12px;border:2px solid var(--border-color);border-radius:12px;font-size:16px;background:var(--input-bg);color:var(--text-color);font-weight:500;}
 textarea{width:100%;min-height:130px;border:2px solid var(--border-color);border-radius:12px;padding:12px;font-size:14px;background:var(--input-bg);color:var(--text-color);resize:vertical;}
 .hidden{display:none;}
 .history-section{margin-top:35px;border-top:2px solid var(--border-color);padding-top:20px;}
@@ -95,7 +137,7 @@ textarea{width:100%;min-height:130px;border:2px solid var(--border-color);border
         </h1>
         <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
             <button class="theme-btn" onclick="toggleTheme()">🌙 Theme</button>
-            <span style="font-size: 11px; font-weight: 800; background: linear-gradient(135deg, #1976d2, #00b4d8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 0.5px;">⚡ Powered by Faruk Ansari</span>
+            <span style="font-size: 11px; font-weight: 800; background: linear-gradient(135deg, #1976d2, #00b4d8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 0.5px;">⚡ Co-Powered by Faruk Ansari</span>
         </div>
     </div>
 
@@ -119,22 +161,31 @@ textarea{width:100%;min-height:130px;border:2px solid var(--border-color);border
     <div id="resultSection" class="hidden">
         <div class="success">✅ Successfully Scanned & Editable!</div>
 
-        <div class="field"><div class="label-row"><span class="label">👤 Candidate Name</span><button class="copy-btn" onclick="copyInputText('candidateName')">Copy</button></div><input type="text" class="value-input" id="candidateName"></div>
-        <div class="field"><div class="label-row"><span class="label">🎓 Degree - Course</span><button class="copy-btn" onclick="copyInputText('degreeCourse')">Copy</button></div><input type="text" class="value-input" id="degreeCourse"></div>
-        <div class="field"><div class="label-row"><span class="label">🏫 College</span><button class="copy-btn" onclick="copyInputText('college')">Copy</button></div><input type="text" class="value-input" id="college"></div>
-        <div class="field"><div class="label-row"><span class="label">🏛️ University</span><button class="copy-btn" onclick="copyInputText('university')">Copy</button></div><input type="text" class="value-input" id="university"></div>
-        <div class="field"><div class="label-row"><span class="label">📊 Result</span><button class="copy-btn" onclick="copyInputText('result')">Copy</button></div><input type="text" class="value-input" id="result"></div>
-        <div class="field"><div class="label-row"><span class="label">📅 Examination</span><button class="copy-btn" onclick="copyInputText('exam')">Copy</button></div><input type="text" class="value-input" id="exam"></div>
-        <div class="field"><div class="label-row"><span class="label">📅 Issue Date</span><button class="copy-btn" onclick="copyInputText('issueDate')">Copy</button></div><input type="text" class="value-input" id="issueDate"></div>
-        <div class="field"><div class="label-row"><span class="label">🔢 Registration No.</span><button class="copy-btn" onclick="copyInputText('regNo')">Copy</button></div><input type="text" class="value-input" id="regNo"></div>
-
-        <div class="btn-group" style="margin-top:20px;">
-            <button onclick="exportToCSV()" style="background:#2e7d32;">📥 CSV</button>
-            <button onclick="window.print()" style="background:#0277bd;">🖨️ Print / PDF</button>
+        <!-- Global Copy All Button -->
+        <div style="margin-bottom: 20px; text-align: right;">
+            <button class="copy-btn" onclick="copyAllData()" style="padding: 10px 18px; font-size: 15px;">📋 Copy All Data</button>
         </div>
 
-        <div class="field" style="margin-top:20px;">
-            <div class="label">📄 Raw JSON Data</div>
+        <div class="field f-name"><div class="label-row"><span class="label" style="color:#2563eb;">👤 Candidate Name</span><button class="copy-btn" onclick="copyInputText('candidateName')">Copy</button></div><input type="text" class="value-input" id="candidateName"></div>
+        <div class="field f-deg"><div class="label-row"><span class="label" style="color:#9333ea;">🎓 Degree - Course (Full Form)</span><button class="copy-btn" onclick="copyInputText('degreeCourse')">Copy</button></div><input type="text" class="value-input" id="degreeCourse"></div>
+        <div class="field f-college"><div class="label-row"><span class="label" style="color:#0d9488;">🏫 College</span><button class="copy-btn" onclick="copyInputText('college')">Copy</button></div><input type="text" class="value-input" id="college"></div>
+        <div class="field f-univ"><div class="label-row"><span class="label" style="color:#4f46e5;">🏛️ University</span><button class="copy-btn" onclick="copyInputText('university')">Copy</button></div><input type="text" class="value-input" id="university"></div>
+        <div class="field f-result"><div class="label-row"><span class="label" style="color:#16a34a;">📊 Result</span><button class="copy-btn" onclick="copyInputText('result')">Copy</button></div><input type="text" class="value-input" id="result"></div>
+        <div class="field f-exam"><div class="label-row"><span class="label" style="color:#ea580c;">📅 Examination</span><button class="copy-btn" onclick="copyInputText('exam')">Copy</button></div><input type="text" class="value-input" id="exam"></div>
+        <div class="field f-issue"><div class="label-row"><span class="label" style="color:#e11d48;">📅 Issue Date</span><button class="copy-btn" onclick="copyInputText('issueDate')">Copy</button></div><input type="text" class="value-input" id="issueDate"></div>
+        <div class="field f-reg"><div class="label-row"><span class="label" style="color:#dc2626;">🔢 Registration No.</span><button class="copy-btn" onclick="copyInputText('regNo')">Copy</button></div><input type="text" class="value-input" id="regNo"></div>
+        <div class="field f-regroll"><div class="label-row"><span class="label" style="color:#a855f7;">⚡ Registration & Roll Details</span><button class="copy-btn" onclick="copyInputText('regRoll')">Copy</button></div><input type="text" class="value-input" id="regRoll"></div>
+        <div class="field f-rollreg"><div class="label-row"><span class="label" style="color:#d97706;">🏷️ Roll Prefix & Reg. Details</span><button class="copy-btn" onclick="copyInputText('rollRegCombined')">Copy</button></div><input type="text" class="value-input" id="rollRegCombined" style="border-color: #d97706;"></div>
+        <div class="field f-seatprn"><div class="label-row"><span class="label" style="color:#0891b2;">💺 Seat&PRN Details</span><button class="copy-btn" onclick="copyInputText('seatPrn')">Copy</button></div><input type="text" class="value-input" id="seatPrn"></div>
+
+        <div class="btn-group" style="margin-top:20px;">
+            <button onclick="exportToExcel()" style="background:#1b5e20;">📊 Excel (.xlsx)</button>
+            <button onclick="exportToCSV()" style="background:#2e7d32;">📥 CSV</button>
+            <button onclick="window.print()" style="background:#0277bd;">🖨️ Print</button>
+        </div>
+
+        <div class="field" style="margin-top:20px; border-left: 8px solid #555;">
+            <div class="label" style="color:#555;">📄 Raw JSON Data</div>
             <textarea id="ocrText" readonly></textarea>
         </div>
     </div>
@@ -153,7 +204,6 @@ textarea{width:100%;min-height:130px;border:2px solid var(--border-color);border
 </div>
 
 <script>
-// Custom Login Credentials:
 const correctUser = "Farooq.gov.in";
 const correctPass = "1998/05/30";
 
@@ -249,14 +299,131 @@ function toTitleCase(str) {
     }).join(' ');
 }
 
-function setInputValue(id, value){
-    const el = document.getElementById(id);
-    const cleaned = (value && value.trim() && value !== "Not Found") ? value.trim() : "";
-    if(id === 'regNo' || id === 'issueDate' || id === 'exam'){
-        el.value = cleaned;
-    } else {
-        el.value = toTitleCase(cleaned);
+function cleanCandidateName(str) {
+    if (!str || str === "Not Found") return "";
+    let cleaned = str.trim();
+    const prefixes = /^(shri|sri|smt|mr|mrs|miss|kumari|dr|master|ku)\.?\s+/i;
+    while (prefixes.test(cleaned)) {
+        cleaned = cleaned.replace(prefixes, "").trim();
     }
+    return toTitleCase(cleaned);
+}
+
+// Updated cleanExam to extract strictly Month and Year only
+function cleanExam(str) {
+    if (!str || str === "Not Found") return "";
+    let cleaned = str.trim();
+    
+    // Regex to find Month (Full or Short) and 4-digit Year
+    const regex = /\b(January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[,.\-\s]*(\d{4})\b/i;
+    const match = cleaned.match(regex);
+    if (match) {
+        return toTitleCase(match[1]) + " " + match[2];
+    }
+    
+    // Fallback: If month name is not matched directly, try looking for just month and year patterns or clean standard labels
+    cleaned = cleaned.replace(/examination|held\s+in|month|year|of|\:|[\(\)]/gi, " ").trim();
+    const matchFallback = cleaned.match(regex);
+    if (matchFallback) {
+        return toTitleCase(matchFallback[1]) + " " + matchFallback[2];
+    }
+
+    return toTitleCase(cleaned);
+}
+
+function formatCourse(str) {
+    if (!str || str === "Not Found") return "";
+    let cleaned = str.trim();
+    
+    const courseReplacements = [
+        { regex: /\b(comp\.?\s*sc\.?|c\.s\.?)\b/gi, full: "Computer Science" },
+        { regex: /\bcse\b/gi, full: "Computer Science and Engineering" },
+        { regex: /\bit\b/gi, full: "Information Technology" },
+        { regex: /\bece\b/gi, full: "Electronics and Communication Engineering" },
+        { regex: /\beee\b/gi, full: "Electrical and Electronics Engineering" },
+        { regex: /\bme\b/gi, full: "Mechanical Engineering" },
+        { regex: /\bce\b/gi, full: "Civil Engineering" },
+        { regex: /\bai\b/gi, full: "Artificial Intelligence" },
+        { regex: /\bml\b/gi, full: "Machine Learning" },
+        { regex: /\bds\b/gi, full: "Data Science" }
+    ];
+
+    let expanded = cleaned;
+    for (let item of courseReplacements) {
+        expanded = expanded.replace(item.regex, item.full);
+    }
+
+    return toTitleCase(expanded);
+}
+
+function expandDegree(str) {
+    if (!str || str === "Not Found") return "";
+    let cleaned = str.trim();
+    
+    const degreeReplacements = [
+        { regex: /\b(b\.?\s*tech\.?|btech)\b/gi, full: "Bachelor of Technology" },
+        { regex: /\b(m\.?\s*tech\.?|mtech)\b/gi, full: "Master of Technology" },
+        { regex: /\b(b\.?\s*sc\.?|bsc)\b/gi, full: "Bachelor of Science" },
+        { regex: /\b(m\.?\s*sc\.?|msc)\b/gi, full: "Master of Science" },
+        { regex: /\b(b\.?\s*com\.?|bcom)\b/gi, full: "Bachelor of Commerce" },
+        { regex: /\b(m\.?\s*com\.?|mcom)\b/gi, full: "Master of Commerce" },
+        { regex: /\b(b\.?\s*a\.?|ba)\b/gi, full: "Bachelor of Arts" },
+        { regex: /\b(m\.?\s*a\.?|ma)\b/gi, full: "Master of Arts" },
+        { regex: /\b(b\.?\s*e\.?|be)\b/gi, full: "Bachelor of Engineering" },
+        { regex: /\b(b\.?\s*ed\.?|bed)\b/gi, full: "Bachelor of Education" },
+        { regex: /\b(m\.?\s*ed\.?|med)\b/gi, full: "Master of Education" },
+        { regex: /\b(b\.?\s*c\.?\s*a\.?|bca)\b/gi, full: "Bachelor of Computer Applications" },
+        { regex: /\b(m\.?\s*c\.?\s*a\.?|mca)\b/gi, full: "Master of Computer Applications" },
+        { regex: /\b(b\.?\s*b\.?\s*a\.?|bba)\b/gi, full: "Bachelor of Business Administration" },
+        { regex: /\b(m\.?\s*b\.?\s*a\.?|mba)\b/gi, full: "Master of Business Administration" },
+        { regex: /\b(ll\.?\s*b\.?|llb)\b/gi, full: "Bachelor of Laws" },
+        { regex: /\b(ll\.?\s*m\.?|llm)\b/gi, full: "Master of Laws" },
+        { regex: /\b(ph\.?\s*d\.?|phd)\b/gi, full: "Doctor of Philosophy" },
+        { regex: /\b(pgdca)\b/gi, full: "Post Graduate Diploma in Computer Applications" },
+        { regex: /\b(adca)\b/gi, full: "Advance Diploma in Computer Applications" },
+        { regex: /\b(dca)\b/gi, full: "Diploma in Computer Applications" },
+        { regex: /\b(ccc)\b/gi, full: "Course on Computer Concepts" },
+        { regex: /\b(bcc)\b/gi, full: "Basic Computer Course" },
+        { regex: /\b(mbbs)\b/gi, full: "Bachelor of Medicine, Bachelor of Surgery" }
+    ];
+
+    let expanded = cleaned;
+    for (let item of degreeReplacements) {
+        expanded = expanded.replace(item.regex, item.full);
+    }
+
+    if (expanded === cleaned) {
+        const degreeMap = {
+            "be": "Bachelor of Engineering",
+            "bsc": "Bachelor of Science",
+            "msc": "Master of Science",
+            "bcom": "Bachelor of Commerce",
+            "mcom": "Master of Commerce",
+            "ba": "Bachelor of Arts",
+            "ma": "Master of Arts",
+            "btech": "Bachelor of Technology",
+            "mtech": "Master of Technology",
+            "bed": "Bachelor of Education",
+            "med": "Master of Education",
+            "bca": "Bachelor of Computer Applications",
+            "mca": "Master of Computer Applications",
+            "bba": "Bachelor of Business Administration",
+            "mba": "Master of Business Administration",
+            "llb": "Bachelor of Laws",
+            "llm": "Master of Laws",
+            "phd": "Doctor of Philosophy",
+            "dca": "Diploma in Computer Applications",
+            "pgdca": "Post Graduate Diploma in Computer Applications",
+            "ccc": "Course on Computer Concepts"
+        };
+        let lookupKey = cleaned.toLowerCase().replace(/[\s\.]+/g, '');
+        if (degreeMap[lookupKey]) {
+            return degreeMap[lookupKey];
+        }
+        return toTitleCase(cleaned);
+    }
+
+    return toTitleCase(expanded);
 }
 
 function copyInputText(elementId){
@@ -267,6 +434,23 @@ function copyInputText(elementId){
     } else {
         alert("Field khali hai!");
     }
+}
+
+function copyAllData(){
+    const currentData = `Candidate Name: ${document.getElementById("candidateName").value}
+Degree - Course: ${document.getElementById("degreeCourse").value}
+College: ${document.getElementById("college").value}
+University: ${document.getElementById("university").value}
+Result: ${document.getElementById("result").value}
+Examination: ${document.getElementById("exam").value}
+Issue Date: ${document.getElementById("issueDate").value}
+Registration No.: ${document.getElementById("regNo").value}
+Registration & Roll Details: ${document.getElementById("regRoll").value}
+Roll Prefix & Reg. Details: ${document.getElementById("rollRegCombined").value}
+Seat & PRN Details: ${document.getElementById("seatPrn").value}`;
+
+    navigator.clipboard.writeText(currentData);
+    alert("Saara data clipboard par copy ho gaya hai!");
 }
 
 function toggleTheme(){
@@ -296,7 +480,21 @@ scanBtn.addEventListener("click", async function(){
         const cleanBase64 = await getInstantBase64(selectedFile);
         const mimeType = selectedFile.type || "application/pdf";
 
-        const promptText = `JSON only: {"candidate_name":"","degree":"","course":"","college":"","university":"","result_class":"","examination":"","issue_date":"","registration_number":""}`;
+        const promptText = `Extract exact certificate details into strict JSON only with these keys:
+{
+  "candidate_name": "",
+  "degree": "",
+  "course": "",
+  "college": "",
+  "university": "",
+  "result_class": "",
+  "examination": "Extract only the month and year of the examination, e.g., May 2024, June 2023",
+  "issue_date": "",
+  "registration_number": "",
+  "roll_details": "Extract exact roll prefix and number if present, e.g., Roll AUR No. 1515141304, Roll PAT No. ..., Roll NAL No. ..., or Roll No. ...",
+  "seat_number": "",
+  "prn_number": ""
+}`;
 
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${apiKey}`, {
             method: 'POST',
@@ -323,30 +521,68 @@ scanBtn.addEventListener("click", async function(){
             rawText = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
             const parsed = JSON.parse(rawText);
 
-            setInputValue("candidateName", parsed.candidate_name);
+            document.getElementById("candidateName").value = cleanCandidateName(parsed.candidate_name);
             
             let deg = parsed.degree && parsed.degree !== "Not Found" ? parsed.degree.trim() : "";
             let crs = parsed.course && parsed.course !== "Not Found" ? parsed.course.trim() : "";
             let combinedDegree = "";
             if(deg && crs && deg.toLowerCase() !== crs.toLowerCase()){
-                combinedDegree = toTitleCase(deg) + " - " + toTitleCase(crs);
+                combinedDegree = expandDegree(deg) + " - " + formatCourse(crs);
             } else {
-                combinedDegree = toTitleCase(deg || crs);
+                combinedDegree = expandDegree(deg || crs);
+                combinedDegree = formatCourse(combinedDegree);
             }
             document.getElementById("degreeCourse").value = combinedDegree;
 
-            setInputValue("college", parsed.college);
-            setInputValue("university", parsed.university);
-            setInputValue("result", parsed.result_class);
-            setInputValue("exam", parsed.examination);
-            setInputValue("issueDate", parsed.issue_date);
-            setInputValue("regNo", parsed.registration_number);
+            document.getElementById("college").value = toTitleCase(parsed.college);
+            document.getElementById("university").value = toTitleCase(parsed.university);
+            document.getElementById("result").value = toTitleCase(parsed.result_class);
+            document.getElementById("exam").value = cleanExam(parsed.examination);
+            document.getElementById("issueDate").value = parsed.issue_date && parsed.issue_date !== "Not Found" ? parsed.issue_date.trim() : "";
+            
+            let rawReg = parsed.registration_number && parsed.registration_number !== "Not Found" ? parsed.registration_number.trim() : "";
+            let cleanReg = rawReg.replace(/^[)\s.,-]+/, "").replace(/^registration\s*no\.?\s*/i, "").trim();
+            document.getElementById("regNo").value = cleanReg;
+
+            let rawRoll = parsed.roll_details && parsed.roll_details !== "Not Found" ? parsed.roll_details.trim() : "";
+            let cleanRoll = rawRoll.replace(/^[)\s.,-]+/, "").trim();
+            document.getElementById("regRoll").value = cleanRoll;
+
+            let combinedRollReg = "";
+            if (cleanRoll && cleanReg) {
+                let rollPart = cleanRoll;
+                if (!/roll/i.test(rollPart)) {
+                    rollPart = "Roll No. " + rollPart;
+                }
+                combinedRollReg = `${rollPart} Registration No. ${cleanReg}`;
+            } else if (cleanRoll) {
+                combinedRollReg = cleanRoll;
+            } else if (cleanReg) {
+                combinedRollReg = `Registration No. ${cleanReg}`;
+            }
+            document.getElementById("rollRegCombined").value = combinedRollReg;
+
+            let seat = parsed.seat_number && parsed.seat_number !== "Not Found" ? parsed.seat_number.trim() : "";
+            let prn = parsed.prn_number && parsed.prn_number !== "Not Found" ? parsed.prn_number.trim() : "";
+            
+            let cleanSeat = seat.replace(/^[)\s.,-]+/, "").replace(/^seat\s*no\.?\s*/i, "").trim();
+            let cleanPrn = prn.replace(/^[)\s.,-]+/, "").replace(/^prn\s*no\.?\s*/i, "").trim();
+
+            let combinedSeatPrn = "";
+            if (cleanSeat && cleanPrn) {
+                combinedSeatPrn = `Seat No. ${cleanSeat} | PRN No. ${cleanPrn}`;
+            } else if (cleanSeat) {
+                combinedSeatPrn = `Seat No. ${cleanSeat}`;
+            } else if (cleanPrn) {
+                combinedSeatPrn = `PRN No. ${cleanPrn}`;
+            }
+            document.getElementById("seatPrn").value = combinedSeatPrn;
 
             document.getElementById("ocrText").value = JSON.stringify(parsed, null, 2);
             resultSection.classList.remove("hidden");
             statusBox.innerText = "🚀 Done!";
             
-            saveToHistory(toTitleCase(parsed.candidate_name) || "Unknown Document");
+            saveToHistory(cleanCandidateName(parsed.candidate_name) || "Unknown Document");
         } else {
             statusBox.innerText = "❌ Response format error.";
         }
@@ -367,6 +603,38 @@ resetBtn.addEventListener("click", function(){
     statusBox.innerText = "IP Address aur File select karein";
 });
 
+function exportToExcel(){
+    const currentData = [
+        { Field: "Candidate Name", Value: document.getElementById("candidateName").value },
+        { Field: "Degree - Course", Value: document.getElementById("degreeCourse").value },
+        { Field: "College", Value: document.getElementById("college").value },
+        { Field: "University", Value: document.getElementById("university").value },
+        { Field: "Result", Value: document.getElementById("result").value },
+        { Field: "Examination", Value: document.getElementById("exam").value },
+        { Field: "Issue Date", Value: document.getElementById("issueDate").value },
+        { Field: "Registration No.", Value: document.getElementById("regNo").value },
+        { Field: "Registration & Roll Details", Value: document.getElementById("regRoll").value },
+        { Field: "Roll Prefix & Reg. Details", Value: document.getElementById("rollRegCombined").value },
+        { Field: "Seat & PRN Details", Value: document.getElementById("seatPrn").value }
+    ];
+    
+    const worksheet = XLSX.utils.json_to_sheet(currentData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Certificate Data");
+    
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const dataBlob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
+    
+    const url = window.URL.createObjectURL(dataBlob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "certificate_data.xlsx";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+}
+
 function exportToCSV(){
     const currentData = {
         candidate_name: document.getElementById("candidateName").value,
@@ -376,7 +644,10 @@ function exportToCSV(){
         result_class: document.getElementById("result").value,
         examination: document.getElementById("exam").value,
         issue_date: document.getElementById("issueDate").value,
-        registration_number: document.getElementById("regNo").value
+        registration_number: document.getElementById("regNo").value,
+        registration_roll_details: document.getElementById("regRoll").value,
+        roll_prefix_reg_details: document.getElementById("rollRegCombined").value,
+        seat_prn_details: document.getElementById("seatPrn").value
     };
     let csvContent = "data:text/csv;charset=utf-8,Field,Value\n" +
         Object.entries(currentData).map(e => `"${e[0]}","${e[1]}"`).join("\n");

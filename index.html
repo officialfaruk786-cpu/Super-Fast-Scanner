@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Super Fast Scanner - Professional Dashboard</title>
+<!-- SheetJS Library for Direct Excel (.xlsx) Export -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 :root {
@@ -61,7 +62,7 @@ h1{font-size:28px;line-height:1.1;margin:0;display:flex;align-items:center;gap:1
     box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
     flex-shrink: 0;
 }
-.theme-btn{background:#334155;color:#fff;border:none;padding:8px 16px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;transition:background 0.2s;}
+.theme-btn{background:#334155;color:#fff;border:none;padding:8px 16px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;transition:background 0.2s;flex:0 0 auto;width:auto;}
 .theme-btn:hover{background:#475569;}
 .upload-title{text-align:center;font-size:18px;font-weight:600;margin-bottom:12px;color:var(--text-color);}
 .form-group{margin-bottom:20px;display:flex;flex-direction:column;gap:8px;text-align:left;}
@@ -72,11 +73,15 @@ input[type="password"]:focus, input[type="text"]:focus{border-color:#2563eb;outl
 input[type=file]{width:100%;font-size:14px;color:var(--text-color);}
 #preview{width:100%;max-height:300px;object-fit:contain;margin-top:15px;border-radius:10px;display:none;}
 .btn-group{display:flex;gap:12px;margin-top:20px;}
-button{flex:1;padding:14px;border:0;border-radius:10px;background:#2563eb;color:white;font-size:16px;font-weight:600;cursor:pointer;transition:opacity 0.2s, transform 0.1s;}
+
+/* Fixed Global Button Rule */
+button{padding:14px;border:0;border-radius:10px;background:#2563eb;color:white;font-size:16px;font-weight:600;cursor:pointer;transition:opacity 0.2s, transform 0.1s;}
+.btn-group button { flex: 1; }
 button:hover{opacity:0.92;}
 button:active{transform:scale(0.98);}
 button.secondary{background:#64748b;}
 button:disabled{background:#94a3b8;cursor:not-allowed;}
+
 #status{text-align:center;margin:20px 0;font-size:16px;font-weight:600;}
 .success{text-align:center;color:#16a34a;font-size:22px;font-weight:700;margin:20px 0;}
 
@@ -96,7 +101,7 @@ button:disabled{background:#94a3b8;cursor:not-allowed;}
     }
 }
 
-/* Modern Card Styling with Professional Accent Borders & Extra Breathing Room */
+/* Modern Card Styling with Professional Accent Borders */
 .field {
     margin: 0;
     padding: 20px 22px;
@@ -126,10 +131,27 @@ button:disabled{background:#94a3b8;cursor:not-allowed;}
 
 .label-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:12px;}
 .label{font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px;flex:1;min-width:0;word-break:break-word;}
-.copy-btn{padding:5px 12px;font-size:12px;background:#10b981;border-radius:6px;width:auto;cursor:pointer;border:none;color:white;font-weight:600;flex-shrink:0;transition:background 0.2s;}
+
+/* Fixed Copy Button Styling */
+.copy-btn{
+    padding:6px 14px;
+    font-size:13px;
+    background:#10b981;
+    border-radius:6px;
+    cursor:pointer;
+    border:none;
+    color:white;
+    font-weight:600;
+    flex: 0 0 auto !important;
+    width: auto !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition:background 0.2s;
+}
 .copy-btn:hover{background:#059669;}
 
-/* Balanced & Clean Result Input Boxes (Not overly heavy/bold) */
+/* Balanced & Clean Result Input Boxes */
 .value-input{
     width:100%;
     padding: 12px 15px;
@@ -138,7 +160,9 @@ button:disabled{background:#94a3b8;cursor:not-allowed;}
     font-size: 15px;
     background: var(--input-bg);
     color: var(--text-color);
-    font-weight: 500; /* Balanced weight - clean and readable */
+    font-weight: 500;
+    display: block !important;
+    visibility: visible !important;
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 .value-input:focus{
@@ -156,6 +180,7 @@ textarea{width:100%;min-height:120px;border:1px solid var(--border-color);border
 </head>
 <body>
 
+<!-- Login Section -->
 <div id="loginSection" class="login-card">
     <h2 style="margin-top:0; font-weight:700;">🔐 Super Fast Scanner</h2>
     <p style="color: #64748b; font-size: 14px; margin-bottom: 25px;">Access karne ke liye Login ID aur Password dalein</p>
@@ -171,6 +196,7 @@ textarea{width:100%;min-height:120px;border:1px solid var(--border-color);border
     <div id="loginError" style="color:#dc2626; font-size:14px; margin-top:15px; font-weight:600;"></div>
 </div>
 
+<!-- Main App Container -->
 <div class="container hidden" id="appContainer">
     <div class="header-row">
         <h1>
@@ -207,11 +233,14 @@ textarea{width:100%;min-height:120px;border:1px solid var(--border-color);border
     <div id="resultSection" class="hidden">
         <div class="success">✅ Successfully Scanned & Editable!</div>
 
+        <!-- Global Copy All Button -->
         <div style="margin-bottom: 15px; text-align: right;">
             <button class="copy-btn" onclick="copyAllData()" style="padding: 10px 18px; font-size: 14px;">📋 Copy All Data</button>
         </div>
 
+        <!-- Laptop Row/Grid Layout Container -->
         <div class="fields-grid">
+            <!-- 1. Candidate Name -->
             <div class="field f-name">
                 <div class="label-row">
                     <span class="label" style="color:#2563eb;">
@@ -223,6 +252,7 @@ textarea{width:100%;min-height:120px;border:1px solid var(--border-color);border
                 <input type="text" class="value-input" id="candidateName">
             </div>
 
+            <!-- 2. Degree & Course -->
             <div class="field f-deg">
                 <div class="label-row">
                     <span class="label" style="color:#9333ea;">
@@ -234,6 +264,7 @@ textarea{width:100%;min-height:120px;border:1px solid var(--border-color);border
                 <input type="text" class="value-input" id="degreeCourse">
             </div>
 
+            <!-- 3. College -->
             <div class="field f-college">
                 <div class="label-row">
                     <span class="label" style="color:#0d9488;">
@@ -245,6 +276,7 @@ textarea{width:100%;min-height:120px;border:1px solid var(--border-color);border
                 <input type="text" class="value-input" id="college">
             </div>
 
+            <!-- 4. University -->
             <div class="field f-univ">
                 <div class="label-row">
                     <span class="label" style="color:#4f46e5;">
@@ -256,6 +288,7 @@ textarea{width:100%;min-height:120px;border:1px solid var(--border-color);border
                 <input type="text" class="value-input" id="university">
             </div>
 
+            <!-- 5. Result -->
             <div class="field f-result">
                 <div class="label-row">
                     <span class="label" style="color:#16a34a;">
@@ -267,6 +300,7 @@ textarea{width:100%;min-height:120px;border:1px solid var(--border-color);border
                 <input type="text" class="value-input" id="result">
             </div>
 
+            <!-- 6. Examination -->
             <div class="field f-exam">
                 <div class="label-row">
                     <span class="label" style="color:#ea580c;">
@@ -278,6 +312,7 @@ textarea{width:100%;min-height:120px;border:1px solid var(--border-color);border
                 <input type="text" class="value-input" id="exam">
             </div>
 
+            <!-- 7. Issue Date -->
             <div class="field f-issue">
                 <div class="label-row">
                     <span class="label" style="color:#e11d48;">
@@ -289,6 +324,7 @@ textarea{width:100%;min-height:120px;border:1px solid var(--border-color);border
                 <input type="text" class="value-input" id="issueDate">
             </div>
 
+            <!-- 8. Registration No. -->
             <div class="field f-reg">
                 <div class="label-row">
                     <span class="label" style="color:#dc2626;">
@@ -300,6 +336,7 @@ textarea{width:100%;min-height:120px;border:1px solid var(--border-color);border
                 <input type="text" class="value-input" id="regNo">
             </div>
 
+            <!-- 9. Registration & Roll Details -->
             <div class="field f-regroll">
                 <div class="label-row">
                     <span class="label" style="color:#a855f7;">
@@ -311,6 +348,7 @@ textarea{width:100%;min-height:120px;border:1px solid var(--border-color);border
                 <input type="text" class="value-input" id="regRoll">
             </div>
 
+            <!-- 10. Roll Prefix & Reg. Details -->
             <div class="field f-rollreg">
                 <div class="label-row">
                     <span class="label" style="color:#d97706;">
@@ -322,6 +360,7 @@ textarea{width:100%;min-height:120px;border:1px solid var(--border-color);border
                 <input type="text" class="value-input" id="rollRegCombined">
             </div>
 
+            <!-- 11. Seat & PRN Details -->
             <div class="field f-seatprn full-span">
                 <div class="label-row">
                     <span class="label" style="color:#0891b2;">
@@ -458,6 +497,76 @@ function toTitleCase(str) {
     }).join(' ');
 }
 
+// Smart Abbreviation Expander with Redundant Phrase Cleanup & Proper Title Case Formatting
+function expandDegreeOrCourse(text) {
+    if (!text || text === "Not Found") return "";
+    let cleanText = text.trim();
+    
+    // Faltu repeat hone wale words "with Honours In" ya "Honours In" ko hataane ke liye
+    cleanText = cleanText.replace(/\bwith\s+honours?\s+in\b/gi, '').replace(/\bhonours?\s+in\b/gi, '').trim();
+
+    const expansions = {
+        "bca": "Bachelor of Computer Application",
+        "mca": "Master of Computer Application",
+        "bsc": "Bachelor of Science",
+        "msc": "Master of Science",
+        "btech": "Bachelor of Technology",
+        "mtech": "Master of Technology",
+        "ba": "Bachelor of Arts",
+        "ma": "Master of Arts",
+        "bcom": "Bachelor of Commerce",
+        "mcom": "Master of Commerce",
+        "bba": "Bachelor of Business Administration",
+        "mba": "Master of Business Administration",
+        "llb": "Bachelor of Laws",
+        "llm": "Master of Laws",
+        "phd": "Doctor of Philosophy",
+        "hons": "(Hons)"
+    };
+
+    const smallWords = new Set(["of", "and", "in", "for", "the", "on", "at", "by", "with"]);
+    const romanNumerals = /^(i|ii|iii|iv|v|vi|vii|viii|ix|x)$/i;
+
+    let words = cleanText.split(/\s+/).filter(Boolean).map((word, index) => {
+        let cleanWord = word.replace(/[^a-z0-9]/gi, '').toLowerCase();
+        
+        // Agar expansion dictionary me hai toh direct lo
+        if (expansions[cleanWord]) {
+            let expanded = expansions[cleanWord];
+            if (word.startsWith('(') && word.endsWith(')') && !expanded.startsWith('(')) {
+                return '(' + expanded + ')';
+            }
+            return expanded;
+        }
+
+        // Agar Roman numeral hai (jaise III, II) toh uppercase rakho
+        if (romanNumerals.test(cleanWord)) {
+            return word.toUpperCase();
+        }
+
+        // Agar hyphenated word hai
+        if (word.includes('-')) {
+            return word.split('-').map((sub, sIdx) => {
+                let cleanSub = sub.replace(/[^a-z0-9]/gi, '').toLowerCase();
+                if (romanNumerals.test(cleanSub)) return sub.toUpperCase();
+                if (sIdx > 0 && smallWords.has(cleanSub)) return cleanSub;
+                if (!sub) return '';
+                return sub.charAt(0).toUpperCase() + sub.slice(1).toLowerCase();
+            }).join('-');
+        }
+
+        let lower = word.toLowerCase();
+        if (index > 0 && smallWords.has(lower)) {
+            return lower;
+        }
+
+        // Baaki sabhi words ko Proper Title Case me convert karo
+        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    });
+
+    return words.join(' ').replace(/\s+/g, ' ').trim();
+}
+
 function cleanCandidateName(str) {
     if (!str || str === "Not Found") return "";
     let cleaned = str.trim();
@@ -482,58 +591,6 @@ function cleanExam(str) {
         return toTitleCase(matchFallback[1]) + " " + matchFallback[2];
     }
     return toTitleCase(cleaned);
-}
-
-function formatCourse(str) {
-    if (!str || str === "Not Found") return "";
-    let cleaned = str.trim();
-    const courseReplacements = [
-        { regex: /\b(comp\.?\s*sc\.?|c\.s\.?)\b/gi, full: "Computer Science" },
-        { regex: /\bcse\b/gi, full: "Computer Science and Engineering" },
-        { regex: /\bit\b/gi, full: "Information Technology" },
-        { regex: /\bece\b/gi, full: "Electronics and Communication Engineering" },
-        { regex: /\beee\b/gi, full: "Electrical and Electronics Engineering" },
-        { regex: /\bme\b/gi, full: "Mechanical Engineering" },
-        { regex: /\bce\b/gi, full: "Civil Engineering" },
-        { regex: /\bai\b/gi, full: "Artificial Intelligence" },
-        { regex: /\bml\b/gi, full: "Machine Learning" },
-        { regex: /\bds\b/gi, full: "Data Science" }
-    ];
-    let expanded = cleaned;
-    for (let item of courseReplacements) {
-        expanded = expanded.replace(item.regex, item.full);
-    }
-    return toTitleCase(expanded);
-}
-
-function expandDegree(str) {
-    if (!str || str === "Not Found") return "";
-    let cleaned = str.trim();
-    const degreeReplacements = [
-        { regex: /\b(b\.?\s*tech\.?|btech)\b/gi, full: "Bachelor of Technology" },
-        { regex: /\b(m\.?\s*tech\.?|mtech)\b/gi, full: "Master of Technology" },
-        { regex: /\b(b\.?\s*sc\.?|bsc)\b/gi, full: "Bachelor of Science" },
-        { regex: /\b(m\.?\s*sc\.?|msc)\b/gi, full: "Master of Science" },
-        { regex: /\b(b\.?\s*com\.?|bcom)\b/gi, full: "Bachelor of Commerce" },
-        { regex: /\b(m\.?\s*com\.?|mcom)\b/gi, full: "Master of Commerce" },
-        { regex: /\b(b\.?\s*a\.?|ba)\b/gi, full: "Bachelor of Arts" },
-        { regex: /\b(m\.?\s*a\.?|ma)\b/gi, full: "Master of Arts" },
-        { regex: /\b(b\.?\s*e\.?|be)\b/gi, full: "Bachelor of Engineering" },
-        { regex: /\b(b\.?\s*ed\.?|bed)\b/gi, full: "Bachelor of Education" },
-        { regex: /\b(m\.?\s*ed\.?|med)\b/gi, full: "Master of Education" },
-        { regex: /\b(b\.?\s*c\.?\s*a\.?|bca)\b/gi, full: "Bachelor of Computer Applications" },
-        { regex: /\b(m\.?\s*c\.?\s*a\.?|mca)\b/gi, full: "Master of Computer Applications" },
-        { regex: /\b(b\.?\s*b\.?\s*a\.?|bba)\b/gi, full: "Bachelor of Business Administration" },
-        { regex: /\b(m\.?\s*b\.?\s*a\.?|mba)\b/gi, full: "Master of Business Administration" },
-        { regex: /\b(ll\.?\s*b\.?|llb)\b/gi, full: "Bachelor of Laws" },
-        { regex: /\b(ll\.?\s*m\.?|llm)\b/gi, full: "Master of Laws" },
-        { regex: /\b(ph\.?\s*d\.?|phd)\b/gi, full: "Doctor of Philosophy" }
-    ];
-    let expanded = cleaned;
-    for (let item of degreeReplacements) {
-        expanded = expanded.replace(item.regex, item.full);
-    }
-    return toTitleCase(expanded);
 }
 
 function copyInputText(elementId){
@@ -637,10 +694,9 @@ scanBtn.addEventListener("click", async function(){
             let crs = parsed.course && parsed.course !== "Not Found" ? parsed.course.trim() : "";
             let combinedDegree = "";
             if(deg && crs && deg.toLowerCase() !== crs.toLowerCase()){
-                combinedDegree = expandDegree(deg) + " - " + formatCourse(crs);
+                combinedDegree = expandDegreeOrCourse(deg) + " - " + expandDegreeOrCourse(crs);
             } else {
-                combinedDegree = expandDegree(deg || crs);
-                combinedDegree = formatCourse(combinedDegree);
+                combinedDegree = expandDegreeOrCourse(deg || crs);
             }
             document.getElementById("degreeCourse").value = combinedDegree;
 

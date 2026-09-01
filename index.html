@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Super Fast Scanner - Login</title>
-<!-- SheetJS Library for Direct Excel (.xlsx) Export -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 :root {
@@ -25,8 +24,20 @@
 }
 *{box-sizing:border-box;}
 body{margin:0;padding:18px;font-family:Arial,Helvetica,sans-serif;background:var(--bg-color);color:var(--text-color);transition:background 0.3s, color 0.3s;}
-.container, .login-card{max-width:500px;margin:50px auto;background:var(--container-bg);border-radius:30px;padding:30px 22px 45px;box-shadow:0 5px 25px rgba(0,0,0,.12);transition:background 0.3s;}
-.login-card{text-align:center;}
+
+/* Updated for Responsive Laptop & Desktop Wide View */
+.container, .login-card{
+    width: 92%;
+    max-width: 850px;
+    margin: 40px auto;
+    background: var(--container-bg);
+    border-radius: 30px;
+    padding: 35px 30px 45px;
+    box-shadow: 0 5px 25px rgba(0,0,0,.12);
+    transition: background 0.3s;
+}
+.login-card{max-width: 500px; text-align:center;}
+
 .header-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
 h1{font-size:26px;line-height:1.1;margin:0;display:flex;align-items:center;gap:12px;}
 .logo-icon{
@@ -108,7 +119,6 @@ textarea{width:100%;min-height:130px;border:2px solid var(--border-color);border
 </head>
 <body>
 
-<!-- Login Section -->
 <div id="loginSection" class="login-card">
     <h2>🔐 Super Fast Scanner</h2>
     <p style="color: #777; font-size: 14px; margin-bottom: 20px;">Access karne ke liye Login ID aur Password dalein</p>
@@ -124,8 +134,7 @@ textarea{width:100%;min-height:130px;border:2px solid var(--border-color);border
     <div id="loginError" style="color:red; font-size:14px; margin-top:15px; font-weight:bold;"></div>
 </div>
 
-<!-- Main App Container -->
-<div class="container hidden" id="appContainer" style="max-width:700px;">
+<div class="container hidden" id="appContainer">
     <div class="header-row">
         <h1>
             <div class="logo-icon">
@@ -161,7 +170,6 @@ textarea{width:100%;min-height:130px;border:2px solid var(--border-color);border
     <div id="resultSection" class="hidden">
         <div class="success">✅ Successfully Scanned & Editable!</div>
 
-        <!-- Global Copy All Button -->
         <div style="margin-bottom: 20px; text-align: right;">
             <button class="copy-btn" onclick="copyAllData()" style="padding: 10px 18px; font-size: 15px;">📋 Copy All Data</button>
         </div>
@@ -176,7 +184,7 @@ textarea{width:100%;min-height:130px;border:2px solid var(--border-color);border
         <div class="field f-reg"><div class="label-row"><span class="label" style="color:#dc2626;">🔢 Registration No.</span><button class="copy-btn" onclick="copyInputText('regNo')">Copy</button></div><input type="text" class="value-input" id="regNo"></div>
         <div class="field f-regroll"><div class="label-row"><span class="label" style="color:#a855f7;">⚡ Registration & Roll Details</span><button class="copy-btn" onclick="copyInputText('regRoll')">Copy</button></div><input type="text" class="value-input" id="regRoll"></div>
         <div class="field f-rollreg"><div class="label-row"><span class="label" style="color:#d97706;">🏷️ Roll Prefix & Reg. Details</span><button class="copy-btn" onclick="copyInputText('rollRegCombined')">Copy</button></div><input type="text" class="value-input" id="rollRegCombined" style="border-color: #d97706;"></div>
-        <div class="field f-seatprn"><div class="label-row"><span class="label" style="color:#0891b2;">💺 Seat&PRN Details</span><button class="copy-btn" onclick="copyInputText('seatPrn')">Copy</button></div><input type="text" class="value-input" id="seatPrn"></div>
+        <div class="field f-seatprn"><div class="label-row"><span class="label" style="color:#0891b2;">💺 Seat & PRN Details</span><button class="copy-btn" onclick="copyInputText('seatPrn')">Copy</button></div><input type="text" class="value-input" id="seatPrn"></div>
 
         <div class="btn-group" style="margin-top:20px;">
             <button onclick="exportToExcel()" style="background:#1b5e20;">📊 Excel (.xlsx)</button>
@@ -309,32 +317,25 @@ function cleanCandidateName(str) {
     return toTitleCase(cleaned);
 }
 
-// Updated cleanExam to extract strictly Month and Year only
 function cleanExam(str) {
     if (!str || str === "Not Found") return "";
     let cleaned = str.trim();
-    
-    // Regex to find Month (Full or Short) and 4-digit Year
     const regex = /\b(January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[,.\-\s]*(\d{4})\b/i;
     const match = cleaned.match(regex);
     if (match) {
         return toTitleCase(match[1]) + " " + match[2];
     }
-    
-    // Fallback: If month name is not matched directly, try looking for just month and year patterns or clean standard labels
     cleaned = cleaned.replace(/examination|held\s+in|month|year|of|\:|[\(\)]/gi, " ").trim();
     const matchFallback = cleaned.match(regex);
     if (matchFallback) {
         return toTitleCase(matchFallback[1]) + " " + matchFallback[2];
     }
-
     return toTitleCase(cleaned);
 }
 
 function formatCourse(str) {
     if (!str || str === "Not Found") return "";
     let cleaned = str.trim();
-    
     const courseReplacements = [
         { regex: /\b(comp\.?\s*sc\.?|c\.s\.?)\b/gi, full: "Computer Science" },
         { regex: /\bcse\b/gi, full: "Computer Science and Engineering" },
@@ -347,19 +348,16 @@ function formatCourse(str) {
         { regex: /\bml\b/gi, full: "Machine Learning" },
         { regex: /\bds\b/gi, full: "Data Science" }
     ];
-
     let expanded = cleaned;
     for (let item of courseReplacements) {
         expanded = expanded.replace(item.regex, item.full);
     }
-
     return toTitleCase(expanded);
 }
 
 function expandDegree(str) {
     if (!str || str === "Not Found") return "";
     let cleaned = str.trim();
-    
     const degreeReplacements = [
         { regex: /\b(b\.?\s*tech\.?|btech)\b/gi, full: "Bachelor of Technology" },
         { regex: /\b(m\.?\s*tech\.?|mtech)\b/gi, full: "Master of Technology" },
@@ -378,51 +376,12 @@ function expandDegree(str) {
         { regex: /\b(m\.?\s*b\.?\s*a\.?|mba)\b/gi, full: "Master of Business Administration" },
         { regex: /\b(ll\.?\s*b\.?|llb)\b/gi, full: "Bachelor of Laws" },
         { regex: /\b(ll\.?\s*m\.?|llm)\b/gi, full: "Master of Laws" },
-        { regex: /\b(ph\.?\s*d\.?|phd)\b/gi, full: "Doctor of Philosophy" },
-        { regex: /\b(pgdca)\b/gi, full: "Post Graduate Diploma in Computer Applications" },
-        { regex: /\b(adca)\b/gi, full: "Advance Diploma in Computer Applications" },
-        { regex: /\b(dca)\b/gi, full: "Diploma in Computer Applications" },
-        { regex: /\b(ccc)\b/gi, full: "Course on Computer Concepts" },
-        { regex: /\b(bcc)\b/gi, full: "Basic Computer Course" },
-        { regex: /\b(mbbs)\b/gi, full: "Bachelor of Medicine, Bachelor of Surgery" }
+        { regex: /\b(ph\.?\s*d\.?|phd)\b/gi, full: "Doctor of Philosophy" }
     ];
-
     let expanded = cleaned;
     for (let item of degreeReplacements) {
         expanded = expanded.replace(item.regex, item.full);
     }
-
-    if (expanded === cleaned) {
-        const degreeMap = {
-            "be": "Bachelor of Engineering",
-            "bsc": "Bachelor of Science",
-            "msc": "Master of Science",
-            "bcom": "Bachelor of Commerce",
-            "mcom": "Master of Commerce",
-            "ba": "Bachelor of Arts",
-            "ma": "Master of Arts",
-            "btech": "Bachelor of Technology",
-            "mtech": "Master of Technology",
-            "bed": "Bachelor of Education",
-            "med": "Master of Education",
-            "bca": "Bachelor of Computer Applications",
-            "mca": "Master of Computer Applications",
-            "bba": "Bachelor of Business Administration",
-            "mba": "Master of Business Administration",
-            "llb": "Bachelor of Laws",
-            "llm": "Master of Laws",
-            "phd": "Doctor of Philosophy",
-            "dca": "Diploma in Computer Applications",
-            "pgdca": "Post Graduate Diploma in Computer Applications",
-            "ccc": "Course on Computer Concepts"
-        };
-        let lookupKey = cleaned.toLowerCase().replace(/[\s\.]+/g, '');
-        if (degreeMap[lookupKey]) {
-            return degreeMap[lookupKey];
-        }
-        return toTitleCase(cleaned);
-    }
-
     return toTitleCase(expanded);
 }
 

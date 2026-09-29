@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://officialfaruk786-cpu.github.io/Super-Fast-ScannerbyFarooqAlam/sitemap.xml
